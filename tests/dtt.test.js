@@ -10,7 +10,8 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
   let delegateAccount = null
 
   beforeEach(async () => {
-    ;[deployerAccount, receiverAccount, delegateAccount] = await ethers.getSigners()
+    ;[deployerAccount, receiverAccount, delegateAccount] =
+      await ethers.getSigners()
     const DTTBasic20 = await ethers.getContractFactory('DTTBasic20')
     dttBasic20Contract = await DTTBasic20.deploy('DTT Basic ERC20', 'DBE')
     await dttBasic20Contract.deployed()
@@ -26,7 +27,14 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
     // The equivalent of keccak256(abi.encodePacked())
     const hashedTightPacked = ethers.utils.solidityKeccak256(
       ['address', 'address', 'uint256', 'uint256', 'uint256', 'uint256'],
-      [deployerAccount.address, receiverAccount.address, amount, fee, nonce, chainId]
+      [
+        deployerAccount.address,
+        receiverAccount.address,
+        amount,
+        fee,
+        nonce,
+        chainId,
+      ]
     )
     // Sign the message and get the 65 byte signature back
     const signature = await deployerAccount.signMessage(
@@ -45,12 +53,27 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
         chainId,
         ethers.utils.arrayify(signature)
       )
-    const deployerBalancePostTransfer = await dttBasic20Contract.balanceOf(deployerAccount.address)
-    expect(deployerBalancePostTransfer).to.equal(193, 'Post-transfer deployer balance incorrect')
-    const receiverBalancePostTransfer = await dttBasic20Contract.balanceOf(receiverAccount.address)
-    expect(receiverBalancePostTransfer).to.equal(5, 'Post-transfer receiver balance incorrect')
-    const delegateBalancePostTransfer = await dttBasic20Contract.balanceOf(delegateAccount.address)
-    expect(delegateBalancePostTransfer).to.equal(2, 'Post-transfer delegate balance incorrect')
+    const deployerBalancePostTransfer = await dttBasic20Contract.balanceOf(
+      deployerAccount.address
+    )
+    expect(deployerBalancePostTransfer).to.equal(
+      193,
+      'Post-transfer deployer balance incorrect'
+    )
+    const receiverBalancePostTransfer = await dttBasic20Contract.balanceOf(
+      receiverAccount.address
+    )
+    expect(receiverBalancePostTransfer).to.equal(
+      5,
+      'Post-transfer receiver balance incorrect'
+    )
+    const delegateBalancePostTransfer = await dttBasic20Contract.balanceOf(
+      delegateAccount.address
+    )
+    expect(delegateBalancePostTransfer).to.equal(
+      2,
+      'Post-transfer delegate balance incorrect'
+    )
   })
 
   it('reverts when an incorrect chain ID is used', async () => {
@@ -61,24 +84,33 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
 
     const hashedTightPacked = ethers.utils.solidityKeccak256(
       ['address', 'address', 'uint256', 'uint256', 'uint256', 'uint256'],
-      [deployerAccount.address, receiverAccount.address, amount, fee, nonce, chainId]
-    )
-
-    const signature = await deployerAccount.signMessage(
-      ethers.utils.arrayify(hashedTightPacked)
-    )
-
-    await expect(dttBasic20Contract
-      .connect(delegateAccount)
-      .delegatedTransfer(
+      [
         deployerAccount.address,
         receiverAccount.address,
         amount,
         fee,
         nonce,
         chainId,
-        ethers.utils.arrayify(signature)
-      )).to.be.revertedWith('DTT: Incorrect chain ID provided')
+      ]
+    )
+
+    const signature = await deployerAccount.signMessage(
+      ethers.utils.arrayify(hashedTightPacked)
+    )
+
+    await expect(
+      dttBasic20Contract
+        .connect(delegateAccount)
+        .delegatedTransfer(
+          deployerAccount.address,
+          receiverAccount.address,
+          amount,
+          fee,
+          nonce,
+          chainId,
+          ethers.utils.arrayify(signature)
+        )
+    ).to.be.revertedWith('DTT: Incorrect chain ID provided')
   })
 
   it('reverts when an incorrect nonce is used', async () => {
@@ -89,27 +121,36 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
 
     const hashedTightPacked = ethers.utils.solidityKeccak256(
       ['address', 'address', 'uint256', 'uint256', 'uint256', 'uint256'],
-      [deployerAccount.address, receiverAccount.address, amount, fee, nonce, chainId]
-    )
-
-    const signature = await deployerAccount.signMessage(
-      ethers.utils.arrayify(hashedTightPacked)
-    )
-
-    await expect(dttBasic20Contract
-      .connect(delegateAccount)
-      .delegatedTransfer(
+      [
         deployerAccount.address,
         receiverAccount.address,
         amount,
         fee,
         nonce,
         chainId,
-        ethers.utils.arrayify(signature)
-      )).to.be.revertedWith('DTT: Incorrect nonce provided')
+      ]
+    )
+
+    const signature = await deployerAccount.signMessage(
+      ethers.utils.arrayify(hashedTightPacked)
+    )
+
+    await expect(
+      dttBasic20Contract
+        .connect(delegateAccount)
+        .delegatedTransfer(
+          deployerAccount.address,
+          receiverAccount.address,
+          amount,
+          fee,
+          nonce,
+          chainId,
+          ethers.utils.arrayify(signature)
+        )
+    ).to.be.revertedWith('DTT: Incorrect nonce provided')
   })
 
-  it('reverts when the signature doesn\'t verify against the provided parameters', async () => {
+  it("reverts when the signature doesn't verify against the provided parameters", async () => {
     const amount = 5
     const fee = 2
     const incorrectFee = 0
@@ -118,24 +159,33 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
 
     const hashedTightPacked = ethers.utils.solidityKeccak256(
       ['address', 'address', 'uint256', 'uint256', 'uint256', 'uint256'],
-      [deployerAccount.address, receiverAccount.address, amount, fee, nonce, chainId]
+      [
+        deployerAccount.address,
+        receiverAccount.address,
+        amount,
+        fee,
+        nonce,
+        chainId,
+      ]
     )
 
     const signature = await deployerAccount.signMessage(
       ethers.utils.arrayify(hashedTightPacked)
     )
 
-    await expect(dttBasic20Contract
-      .connect(delegateAccount)
-      .delegatedTransfer(
-        deployerAccount.address,
-        receiverAccount.address,
-        amount,
-        incorrectFee,
-        nonce,
-        chainId,
-        ethers.utils.arrayify(signature)
-      )).to.be.revertedWith('DTT: Signature invalid')
+    await expect(
+      dttBasic20Contract
+        .connect(delegateAccount)
+        .delegatedTransfer(
+          deployerAccount.address,
+          receiverAccount.address,
+          amount,
+          incorrectFee,
+          nonce,
+          chainId,
+          ethers.utils.arrayify(signature)
+        )
+    ).to.be.revertedWith('DTT: Signature invalid')
   })
 
   context('when combatting replay attacks', async () => {
@@ -147,7 +197,14 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
 
       const hashedTightPacked = ethers.utils.solidityKeccak256(
         ['address', 'address', 'uint256', 'uint256', 'uint256', 'uint256'],
-        [deployerAccount.address, receiverAccount.address, amount, fee, nonce, chainId]
+        [
+          deployerAccount.address,
+          receiverAccount.address,
+          amount,
+          fee,
+          nonce,
+          chainId,
+        ]
       )
 
       const signature = await deployerAccount.signMessage(
@@ -166,34 +223,38 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
           ethers.utils.arrayify(signature)
         )
       // Try a simple replay
-      await expect(dttBasic20Contract
-        .connect(delegateAccount)
-        .delegatedTransfer(
-          deployerAccount.address,
-          receiverAccount.address,
-          amount,
-          fee,
-          nonce,
-          chainId,
-          ethers.utils.arrayify(signature)
-        )).to.be.revertedWith('DTT: Incorrect nonce provided')
+      await expect(
+        dttBasic20Contract
+          .connect(delegateAccount)
+          .delegatedTransfer(
+            deployerAccount.address,
+            receiverAccount.address,
+            amount,
+            fee,
+            nonce,
+            chainId,
+            ethers.utils.arrayify(signature)
+          )
+      ).to.be.revertedWith('DTT: Incorrect nonce provided')
       // Try using the correct nonce without getting a new signature
-      await expect(dttBasic20Contract
-        .connect(delegateAccount)
-        .delegatedTransfer(
-          deployerAccount.address,
-          receiverAccount.address,
-          amount,
-          fee,
-          nonce + 1,
-          chainId,
-          ethers.utils.arrayify(signature)
-        )).to.be.revertedWith('DTT: Signature invalid')
+      await expect(
+        dttBasic20Contract
+          .connect(delegateAccount)
+          .delegatedTransfer(
+            deployerAccount.address,
+            receiverAccount.address,
+            amount,
+            fee,
+            nonce + 1,
+            chainId,
+            ethers.utils.arrayify(signature)
+          )
+      ).to.be.revertedWith('DTT: Signature invalid')
     })
 
-    // NOTE: At the time of this writing, I (@aunyks) don't know of a way to change the chain ID 
-    //       while Hardhat tests are executing, but because of the require statement 
-    //       asserting that the provided chain ID matches that of the blockchain, I'm 
+    // NOTE: At the time of this writing, I (@aunyks) don't know of a way to change the chain ID
+    //       while Hardhat tests are executing, but because of the require statement
+    //       asserting that the provided chain ID matches that of the blockchain, I'm
     //       willing to assume that it functions as intended
 
     //       If you cannot also make this assumption, do NOT use these contracts.
