@@ -20,8 +20,8 @@ async function main() {
   console.log('DTTBasic20 deployed to:', dttBasic20Contract.address)
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
+// Execute this with:
+// npx hardhat run scripts/sample-script.js --network localhost
 main()
   .then(() => process.exit(0))
   .catch(error => {
