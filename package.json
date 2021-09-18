@@ -1,0 +1,50 @@
+{
+  "name": "delegated-transfer-token",
+  "version": "0.0.0",
+  "description": "Send a token using just that token, no Ether needed.",
+  "scripts": {
+    "test": "hardhat test",
+    "console": "hardhat console",
+    "prettier": "prettier --write .",
+    "prepare": "husky install",
+    "local-node": "hardhat node"
+  },
+  "keywords": [
+    "ethereum",
+    "solidity",
+    "smart contract",
+    "token",
+    "fungible",
+    "delegated"
+  ],
+  "author": "Gerald Nash (https://aunyks.com) <me@aunyks.com> |aunyks.eth|",
+  "license": "GPLv3",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.3.0"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.2",
+    "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "chai": "^4.3.4",
+    "dotenv": "^10.0.0",
+    "ethereum-waffle": "^3.4.0",
+    "ethers": "^5.4.5",
+    "hardhat": "^2.6.1",
+    "husky": "^7.0.1",
+    "prettier": "^2.3.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run prettier"
+    }
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "useTabs": false,
+    "arrowParens": "avoid",
+    "semi": false,
+    "singleQuote": true,
+    "quoteProps": "as-needed",
+    "bracketSpacing": true
+  }
+}
