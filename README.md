@@ -18,7 +18,7 @@ DTTs also provide businesses and individuals new revenue models by enabling a fe
 
 ## But crypto people don't like third parties
 
-"Crypto people" don't like **trusted** third parties. Because a delegate is only relaying a user's signature to the chain, they can't modify it to steal mmoney.
+"Crypto people" don't like **trusted** third parties. Because a delegate is only relaying a user's signature to the chain, they can't modify it to steal money.
 
 Users only need to trust that delegates will actually submit the transaction, not that they can change its details.
 
