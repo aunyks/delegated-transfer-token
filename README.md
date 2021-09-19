@@ -20,24 +20,26 @@ DTTs also provide businesses and individuals new revenue models by enabling a fe
 
 "Crypto people" don't like **trusted** third parties. Because a delegate is only relaying a user's signature to the chain, they can't modify it to steal money.
 
-Users only need to trust that delegates will actually submit the transaction, not that they can change its details.  
+Users only need to trust that delegates will actually submit the transaction, not that they can change its details.
 
 ## How does it work?
 
-The `DTT` contract extends the ERC20 standard to introduce a `delegatedTransfer()` function. It lets users define normal transfer parameters in addition to a nonce, chain ID, signature, and fee designating the number of tokens paid to the transaction delegate. See `contracts/DTT.sol` and related examples for more details.  
+The `DTT` contract extends the ERC20 standard to introduce a `delegatedTransfer()` function. It lets users define normal transfer parameters in addition to a nonce, chain ID, signature, and fee designating the number of tokens paid to the transaction delegate. See `contracts/DTT.sol` and related examples for more details.
+
 ```solidity
 function delegatedTransfer(
-    address sender,
-    address recipient,
-    uint256 amount,
-    uint256 fee,
-    uint256 nonce,
-    uint256 chainId,
-    bytes memory signature
-  ) public
-```  
+  address sender,
+  address recipient,
+  uint256 amount,
+  uint256 fee,
+  uint256 nonce,
+  uint256 chainId,
+  bytes memory signature
+)
+```
 
-Let's say Alice wants to pay Charlie in DTT, but she doesn't have any Ether in her wallet. Here's how she can use `delegatedTransfer()` with Bob's help to send money to Charlie.  
+Let's say Alice wants to pay Charlie in DTT, but she doesn't have any Ether in her wallet. Here's how she can use `delegatedTransfer()` with Bob's help to send money to Charlie.
+
 1. Alice tells Bob she wants to send some DTT to Charlie
 2. Bob checks how much the transaction would cost him to submit
 3. Bob tells Alice how much DTT he wants in order to submit the transaction
