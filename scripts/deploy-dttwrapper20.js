@@ -5,6 +5,10 @@
 // Runtime Environment's members available in the global scope.
 const hre = require('hardhat')
 
+const tokenName = 'DTT Wrapper Token'
+const tokenSymbol = 'DBE'
+const underlyingTokenSymbol = '0x2125e5963f17643461be3067ba75c62dac9f3d4a'
+
 async function main() {
   // Hardhat always runs the compile task when running scripts with its command
   // line interface
@@ -12,16 +16,18 @@ async function main() {
   // await hre.run('compile')
 
   // We get the contract to deploy
-  const DTTBasic20 = await hre.ethers.getContractFactory('DTTBasic20')
-  const dttBasic20Contract = await DTTBasic20.deploy('DTT Basic ERC20', 'DBE')
+  const DTTWrapper20 = await hre.ethers.getContractFactory('DTTWrapper20')
+  const dttWrapper20Contract = await DTTWrapper20.deploy(
+    tokenName,
+    tokenSymbol,
+    underlyingTokenSymbol
+  )
 
-  await dttBasic20Contract.deployed()
+  await dttWrapper20Contract.deployed()
 
-  console.log('DTTBasic20 deployed to:', dttBasic20Contract.address)
+  console.log('DTTWrapper20 deployed to:', dttWrapper20Contract.address)
 }
 
-// Execute this with:
-// npx hardhat run scripts/deploy-dttbasic20.js --network localhost
 main()
   .then(() => process.exit(0))
   .catch(error => {

@@ -1,10 +1,10 @@
 # Delegated Transfer Token
 
-You're a generous person, and sometimes you want to send tokens to others. On Ethereum, you need Ether _and_ the token just to send the token. Needing two currencies just to send one sucks. _Delegated transfer tokens_ make it better.
+You're a generous person, and sometimes you want to send tokens to others. On Ethereum, you need Ether _and_ the token just to send the token. Needing two currencies just to send one sucks. Delegated transfer tokens make it better.
 
-With _delegated transfer tokens_, you can send a token using _just that token_. No need to have Ether in your wallet just to send money.
+With delegated transfer tokens, you can send a token using _just that token_. No need to have Ether in your wallet just to send money.
 
-## What is it, _really_?
+## What is it, really?
 
 DTTs are a new token pattern inspired by the [ERC-865](https://github.com/ethereum/EIPs/issues/865) token standard. It maintains the standard's motivation of allowing users to pay transaction fees in the desired token, but it resolves the security concerns that the standard had (namely replay attacks).
 
@@ -20,7 +20,30 @@ DTTs also provide businesses and individuals new revenue models by enabling a fe
 
 "Crypto people" don't like **trusted** third parties. Because a delegate is only relaying a user's signature to the chain, they can't modify it to steal money.
 
-Users only need to trust that delegates will actually submit the transaction, not that they can change its details.
+Users only need to trust that delegates will actually submit the transaction, not that they can change its details.  
+
+## How does it work?
+
+The `DTT` contract extends the ERC20 standard to introduce a `delegatedTransfer()` function. It lets users define normal transfer parameters in addition to a nonce, chain ID, signature, and fee designating the number of tokens paid to the transaction delegate. See `contracts/DTT.sol` and related examples for more details.  
+```solidity
+function delegatedTransfer(
+    address sender,
+    address recipient,
+    uint256 amount,
+    uint256 fee,
+    uint256 nonce,
+    uint256 chainId,
+    bytes memory signature
+  ) public
+```  
+
+Let's say Alice wants to pay Charlie in DTT, but she doesn't have any Ether in her wallet. Here's how she can use `delegatedTransfer()` with Bob's help to send money to Charlie.  
+1. Alice tells Bob she wants to send some DTT to Charlie
+2. Bob checks how much the transaction would cost him to submit
+3. Bob tells Alice how much DTT he wants in order to submit the transaction
+4. Alice agrees on the fee, signs the payload (all the parameters in the `delegatedTransfer` function), and gives the payload and signature to Bob
+5. Bob calls `delegatedTransfer()` with the agreed parameters and Alice's signature
+6. DONE! Charlie receives Alice's payment and Bob earns his fees in the process
 
 _Be mindful of the license._
 
