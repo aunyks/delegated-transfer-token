@@ -7,11 +7,13 @@ With delegated transfer tokens, you can send a token using _just that token_. No
 ## Get started
 
 1. Install the contracts
+
 ```
 npm install --save delegated-transfer-token
 ```
 
 2. Import them into your project! We highly recommend using them alongside [OpenZeppelin contracts](https://github.com/OpenZeppelin/openzeppelin-contracts).
+
 ```solidity
 pragma solidity ^0.8.4;
 
@@ -25,18 +27,6 @@ contract DTTBasic20 is ERC20, DTT {
   }
 }
 ```
-
-## What is it, really?
-
-DTTs are a new token pattern inspired by the [ERC-865](https://github.com/ethereum/EIPs/issues/865) token standard. It maintains the standard's motivation of allowing users to pay transaction fees in the desired token, but it resolves the security concerns the standard had (namely replay attacks).
-
-DTTs are also ERC20-compatible, so if you want to do old-style token transfers you can!
-
-## Why this?
-
-One of the worst experiences Ethereum users have is needing Ether and a token to send the token. It's a confusing process that's hindering adoption of cryptocurrencies overall. DTTs provide the refreshing and familiar experience of sending money with just that money alone.
-
-DTTs also provide businesses and individuals new revenue models by enabling a fee market: people can compete to earn fees in the desired token by offering users the best prices and fastest transaction speeds possible.
 
 ## How does it work?
 
@@ -61,7 +51,19 @@ Let's say Alice wants to pay Charlie in DTT, but she doesn't have any Ether in h
 3. Bob tells Alice how much DTT he wants in order to submit the transaction
 4. Alice agrees on the fee, signs the payload (all the parameters in the `delegatedTransfer` function), and gives the payload and signature to Bob
 5. Bob calls `delegatedTransfer()` with the agreed parameters and Alice's signature
-6. DONE! Charlie receives Alice's payment and Bob earns his fees in the process  
+6. DONE! Charlie receives Alice's payment and Bob earns his fees in the process
+
+## What is it, really?
+
+DTTs are a new token pattern inspired by the [ERC-865](https://github.com/ethereum/EIPs/issues/865) token standard. It maintains the standard's motivation of allowing users to pay transaction fees in the desired token, but it resolves the security concerns the standard had (namely replay attacks).
+
+DTTs are also ERC20-compatible, so if you want to do old-style token transfers you can!
+
+## Why this?
+
+One of the worst experiences Ethereum users have is needing Ether and a token to send the token. It's a confusing process that's hindering adoption of cryptocurrencies overall. DTTs provide the refreshing and familiar experience of sending money with just that money alone.
+
+DTTs also provide businesses and individuals new revenue models by enabling a fee market: people can compete to earn fees in the desired token by offering users the best prices and fastest transaction speeds possible.
 
 ## But crypto people don't like third parties
 
