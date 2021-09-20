@@ -4,6 +4,28 @@ On Ethereum, you need Ether _and_ the token just to send the token. Needing two 
 
 With delegated transfer tokens, you can send a token using _just that token_. No need to have Ether in your wallet just to send money.
 
+## Get started
+
+1. Install the contracts
+```
+npm install --save delegated-transfer-token
+```
+
+2. Import them into your project! We highly recommend using them alongside [OpenZeppelin contracts](https://github.com/OpenZeppelin/openzeppelin-contracts).
+```solidity
+pragma solidity ^0.8.4;
+
+import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
+import 'delegated-transfer-token/contracts/DTT.sol';
+
+contract DTTBasic20 is ERC20, DTT {
+  constructor(string memory name, string memory symbol) ERC20(name, symbol) {
+    // Mint 200 tokens when the contract is deployed
+    _mint(_msgSender(), 200 * (10 ** decimals()));
+  }
+}
+```
+
 ## What is it, really?
 
 DTTs are a new token pattern inspired by the [ERC-865](https://github.com/ethereum/EIPs/issues/865) token standard. It maintains the standard's motivation of allowing users to pay transaction fees in the desired token, but it resolves the security concerns the standard had (namely replay attacks).
@@ -39,7 +61,7 @@ Let's say Alice wants to pay Charlie in DTT, but she doesn't have any Ether in h
 3. Bob tells Alice how much DTT he wants in order to submit the transaction
 4. Alice agrees on the fee, signs the payload (all the parameters in the `delegatedTransfer` function), and gives the payload and signature to Bob
 5. Bob calls `delegatedTransfer()` with the agreed parameters and Alice's signature
-6. DONE! Charlie receives Alice's payment and Bob earns his fees in the process
+6. DONE! Charlie receives Alice's payment and Bob earns his fees in the process  
 
 ## But crypto people don't like third parties
 
