@@ -14,7 +14,7 @@ DTTs are also ERC20-compatible, so if you want to do old-style token transfers y
 
 One of the worst experiences Ethereum users have is needing Ether and a token to send the token. It's a confusing process that's hindering adoption of cryptocurrencies overall. DTTs provide the refreshing and familiar experience of sending money with just that money alone.
 
-DTTs also provide businesses and individuals new revenue models by enabling a fee market: people can compete to earn fees in the desired token by offering users the best prices and fastest transaction speeds possible.  
+DTTs also provide businesses and individuals new revenue models by enabling a fee market: people can compete to earn fees in the desired token by offering users the best prices and fastest transaction speeds possible.
 
 ## How does it work?
 
@@ -39,13 +39,13 @@ Let's say Alice wants to pay Charlie in DTT, but she doesn't have any Ether in h
 3. Bob tells Alice how much DTT he wants in order to submit the transaction
 4. Alice agrees on the fee, signs the payload (all the parameters in the `delegatedTransfer` function), and gives the payload and signature to Bob
 5. Bob calls `delegatedTransfer()` with the agreed parameters and Alice's signature
-6. DONE! Charlie receives Alice's payment and Bob earns his fees in the process  
+6. DONE! Charlie receives Alice's payment and Bob earns his fees in the process
 
 ## But crypto people don't like third parties
 
 "Crypto people" don't like **trusted** third parties. Because a delegate is only relaying a user's signature to the chain, they can't modify it to steal money.
 
-Users only need to trust that delegates will actually submit the transaction, not that they can change its details.  
+Users only need to trust that delegates will actually submit the transaction, not that they can change its details.
 
 _Be mindful of the license._
 
