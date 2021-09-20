@@ -1,12 +1,12 @@
 # Delegated Transfer Token
 
-You're a generous person, and sometimes you want to send tokens to others. On Ethereum, you need Ether _and_ the token just to send the token. Needing two currencies just to send one sucks. Delegated transfer tokens make it better.
+On Ethereum, you need Ether _and_ the token just to send the token. Needing two currencies just to send one sucks. Delegated transfer tokens make it better.
 
 With delegated transfer tokens, you can send a token using _just that token_. No need to have Ether in your wallet just to send money.
 
 ## What is it, really?
 
-DTTs are a new token pattern inspired by the [ERC-865](https://github.com/ethereum/EIPs/issues/865) token standard. It maintains the standard's motivation of allowing users to pay transaction fees in the desired token, but it resolves the security concerns that the standard had (namely replay attacks).
+DTTs are a new token pattern inspired by the [ERC-865](https://github.com/ethereum/EIPs/issues/865) token standard. It maintains the standard's motivation of allowing users to pay transaction fees in the desired token, but it resolves the security concerns the standard had (namely replay attacks).
 
 DTTs are also ERC20-compatible, so if you want to do old-style token transfers you can!
 
