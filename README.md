@@ -12,7 +12,7 @@ With delegated transfer tokens, you can send a token using _just that token_. No
 npm install --save delegated-transfer-token
 ```
 
-2. Import them into your project! We highly recommend using them alongside [OpenZeppelin contracts](https://github.com/OpenZeppelin/openzeppelin-contracts).
+2. Import them into your project! I highly recommend using them alongside [OpenZeppelin contracts](https://github.com/OpenZeppelin/openzeppelin-contracts).
 
 ```solidity
 pragma solidity ^0.8.4;
