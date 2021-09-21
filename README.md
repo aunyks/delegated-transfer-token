@@ -47,11 +47,11 @@ function delegatedTransfer(
 Let's say Alice wants to pay Charlie in DTT, but she doesn't have any Ether in her wallet. Here's how she can use `delegatedTransfer()` with Bob's help to send money to Charlie.
 
 1. Alice tells Bob she wants to send some DTT to Charlie
-2. Bob checks how much the transaction would cost him to submit
-3. Bob tells Alice how much DTT he wants in order to submit the transaction
-4. Alice agrees on the fee, signs the payload (all the parameters in the `delegatedTransfer` function), and gives the payload and signature to Bob
-5. Bob calls `delegatedTransfer()` with the agreed parameters and Alice's signature
-6. DONE! Charlie receives Alice's payment and Bob earns his fees in the process
+2. Bob tells Alice how much DTT he wants in order to submit the transaction
+3. Alice agrees on the fee, signs the payload (all the parameters in the `delegatedTransfer` function), and gives the payload and signature to Bob
+4. Bob calls `delegatedTransfer()` with the agreed parameters and Alice's signature  
+
+DONE! Charlie receives Alice's payment and Bob earns his fees as a delegate once the transaction is confirmed. Here, Bob is the only one that has some Ether.
 
 ## What is it, really?
 
