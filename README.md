@@ -49,7 +49,7 @@ Let's say Alice wants to pay Charlie in DTT, but she doesn't have any Ether in h
 1. Alice tells Bob she wants to send some DTT to Charlie
 2. Bob tells Alice how much DTT he wants in order to submit the transaction
 3. Alice agrees on the fee, signs the payload (all the parameters in the `delegatedTransfer` function), and gives the payload and signature to Bob
-4. Bob calls `delegatedTransfer()` with the agreed parameters and Alice's signature  
+4. Bob calls `delegatedTransfer()` with the agreed parameters and Alice's signature
 
 DONE! Charlie receives Alice's payment and Bob earns his fees as a delegate once the transaction is confirmed. Here, Bob is the only one that has some Ether.
 

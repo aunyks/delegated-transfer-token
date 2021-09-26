@@ -76,6 +76,20 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
     )
   })
 
+  it('correctly transfers tokens during delegated transfers', async () => {
+    const interfaceId = '0x429b90b8'
+
+    // Have the delegate account call the delegatedTransfer function
+    const dttInterfaceMatched = await dttBasic20Contract
+      .hasDTTInterface(
+        ethers.utils.arrayify(interfaceId)
+      )
+    expect(dttInterfaceMatched).to.equal(
+      true,
+      'Incorrect DTT interface provided'
+    )
+  })
+
   it('reverts when an incorrect chain ID is used', async () => {
     const amount = 5
     const fee = 2

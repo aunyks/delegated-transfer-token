@@ -1,6 +1,6 @@
 {
   "name": "delegated-transfer-token",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Send a token using just that token, no Ether needed.",
   "files": [
     "/contracts/**/*.sol"

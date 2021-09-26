@@ -10,7 +10,20 @@ abstract contract DTT is ERC20 {
 
   mapping(address => uint256) internal _nonceOf;
 
-  function nonceOf(address account) public view returns (uint256) {
+  bytes4 private constant DTT_INTERFACE_ID =
+    bytes4(keccak256('nonceOf(address)')) ^
+      bytes4(
+        keccak256(
+          'delegatedTransfer(address,address,uint256,uint256,uint256,uint256,bytes)'
+        )
+      );
+
+  // Use this function in your `supportsInterface()` function
+  function hasDTTInterface(bytes4 interfaceId) public pure returns (bool) {
+    return interfaceId == DTT_INTERFACE_ID;
+  }
+
+  function nonceOf(address account) public view virtual returns (uint256) {
     return _nonceOf[account];
   }
 
@@ -22,7 +35,7 @@ abstract contract DTT is ERC20 {
     uint256 nonce,
     uint256 chainId,
     bytes memory signature
-  ) public {
+  ) public virtual {
     require(nonce == _nonceOf[sender], 'DTT: Incorrect nonce provided');
     require(chainId == block.chainid, 'DTT: Incorrect chain ID provided');
     require(
