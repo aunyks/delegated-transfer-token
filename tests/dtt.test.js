@@ -26,7 +26,15 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
 
     // The equivalent of keccak256(abi.encodePacked())
     const hashedTightPacked = ethers.utils.solidityKeccak256(
-      ['address', 'address', 'uint256', 'uint256', 'address', 'uint256', 'uint256'],
+      [
+        'address',
+        'address',
+        'uint256',
+        'uint256',
+        'address',
+        'uint256',
+        'uint256',
+      ],
       [
         deployerAccount.address,
         receiverAccount.address,
@@ -98,7 +106,15 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
     const chainId = 0
 
     const hashedTightPacked = ethers.utils.solidityKeccak256(
-      ['address', 'address', 'uint256', 'uint256', 'address', 'uint256', 'uint256'],
+      [
+        'address',
+        'address',
+        'uint256',
+        'uint256',
+        'address',
+        'uint256',
+        'uint256',
+      ],
       [
         deployerAccount.address,
         receiverAccount.address,
@@ -137,7 +153,15 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
     const chainId = 31337
 
     const hashedTightPacked = ethers.utils.solidityKeccak256(
-      ['address', 'address', 'uint256', 'uint256', 'address', 'uint256', 'uint256'],
+      [
+        'address',
+        'address',
+        'uint256',
+        'uint256',
+        'address',
+        'uint256',
+        'uint256',
+      ],
       [
         deployerAccount.address,
         receiverAccount.address,
@@ -177,7 +201,15 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
     const chainId = 31337
 
     const hashedTightPacked = ethers.utils.solidityKeccak256(
-      ['address', 'address', 'uint256', 'uint256', 'address', 'uint256', 'uint256'],
+      [
+        'address',
+        'address',
+        'uint256',
+        'uint256',
+        'address',
+        'uint256',
+        'uint256',
+      ],
       [
         deployerAccount.address,
         receiverAccount.address,
@@ -218,7 +250,15 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
 
     // The equivalent of keccak256(abi.encodePacked())
     const hashedTightPacked = ethers.utils.solidityKeccak256(
-      ['address', 'address', 'uint256', 'uint256', 'address', 'uint256', 'uint256'],
+      [
+        'address',
+        'address',
+        'uint256',
+        'uint256',
+        'address',
+        'uint256',
+        'uint256',
+      ],
       [
         deployerAccount.address,
         receiverAccount.address,
@@ -235,18 +275,20 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
     )
 
     // Have the delegate account call the delegatedTransfer function
-    await expect(dttBasic20Contract
-      .connect(delegateAccount)
-      .delegatedTransfer(
-        deployerAccount.address,
-        receiverAccount.address,
-        amount,
-        fee,
-        ZERO_ADDRESS,
-        nonce,
-        chainId,
-        ethers.utils.arrayify(signature)
-      )).to.be.revertedWith('DTT: Incorrect token address provided')
+    await expect(
+      dttBasic20Contract
+        .connect(delegateAccount)
+        .delegatedTransfer(
+          deployerAccount.address,
+          receiverAccount.address,
+          amount,
+          fee,
+          ZERO_ADDRESS,
+          nonce,
+          chainId,
+          ethers.utils.arrayify(signature)
+        )
+    ).to.be.revertedWith('DTT: Incorrect token address provided')
   })
 
   context('when combatting replay attacks', async () => {
@@ -257,7 +299,15 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
       const chainId = 31337
 
       const hashedTightPacked = ethers.utils.solidityKeccak256(
-        ['address', 'address', 'uint256', 'uint256', 'address', 'uint256', 'uint256'],
+        [
+          'address',
+          'address',
+          'uint256',
+          'uint256',
+          'address',
+          'uint256',
+          'uint256',
+        ],
         [
           deployerAccount.address,
           receiverAccount.address,
