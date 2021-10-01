@@ -3,7 +3,6 @@ pragma solidity ^0.8.4;
 
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 import '@openzeppelin/contracts/utils/cryptography/ECDSA.sol';
-import 'hardhat/console.sol';
 
 abstract contract DTT is ERC20 {
   using ECDSA for bytes32;
@@ -32,6 +31,7 @@ abstract contract DTT is ERC20 {
     address recipient,
     uint256 amount,
     uint256 fee,
+    address tokenAddress,
     uint256 nonce,
     uint256 chainId,
     bytes memory signature
@@ -39,8 +39,20 @@ abstract contract DTT is ERC20 {
     require(nonce == _nonceOf[sender], 'DTT: Incorrect nonce provided');
     require(chainId == block.chainid, 'DTT: Incorrect chain ID provided');
     require(
+      tokenAddress == address(this),
+      'DTT: Incorrect token address provided'
+    );
+    require(
       keccak256(
-        abi.encodePacked(sender, recipient, amount, fee, nonce, chainId)
+        abi.encodePacked(
+          sender,
+          recipient,
+          amount,
+          fee,
+          tokenAddress,
+          nonce,
+          chainId
+        )
       ).toEthSignedMessageHash().recover(signature) == sender,
       'DTT: Signature invalid'
     );

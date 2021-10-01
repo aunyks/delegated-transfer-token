@@ -38,6 +38,7 @@ function delegatedTransfer(
   address recipient,
   uint256 amount,
   uint256 fee,
+  address tokenAddress,
   uint256 nonce,
   uint256 chainId,
   bytes memory signature

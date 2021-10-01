@@ -26,12 +26,13 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
 
     // The equivalent of keccak256(abi.encodePacked())
     const hashedTightPacked = ethers.utils.solidityKeccak256(
-      ['address', 'address', 'uint256', 'uint256', 'uint256', 'uint256'],
+      ['address', 'address', 'uint256', 'uint256', 'address', 'uint256', 'uint256'],
       [
         deployerAccount.address,
         receiverAccount.address,
         amount,
         fee,
+        dttBasic20Contract.address,
         nonce,
         chainId,
       ]
@@ -49,6 +50,7 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
         receiverAccount.address,
         amount,
         fee,
+        dttBasic20Contract.address,
         nonce,
         chainId,
         ethers.utils.arrayify(signature)
@@ -76,14 +78,13 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
     )
   })
 
-  it('correctly transfers tokens during delegated transfers', async () => {
+  it('detects the DTT interface ID', async () => {
     const interfaceId = '0x429b90b8'
 
     // Have the delegate account call the delegatedTransfer function
-    const dttInterfaceMatched = await dttBasic20Contract
-      .hasDTTInterface(
-        ethers.utils.arrayify(interfaceId)
-      )
+    const dttInterfaceMatched = await dttBasic20Contract.hasDTTInterface(
+      ethers.utils.arrayify(interfaceId)
+    )
     expect(dttInterfaceMatched).to.equal(
       true,
       'Incorrect DTT interface provided'
@@ -97,12 +98,13 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
     const chainId = 0
 
     const hashedTightPacked = ethers.utils.solidityKeccak256(
-      ['address', 'address', 'uint256', 'uint256', 'uint256', 'uint256'],
+      ['address', 'address', 'uint256', 'uint256', 'address', 'uint256', 'uint256'],
       [
         deployerAccount.address,
         receiverAccount.address,
         amount,
         fee,
+        dttBasic20Contract.address,
         nonce,
         chainId,
       ]
@@ -120,6 +122,7 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
           receiverAccount.address,
           amount,
           fee,
+          dttBasic20Contract.address,
           nonce,
           chainId,
           ethers.utils.arrayify(signature)
@@ -134,12 +137,13 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
     const chainId = 31337
 
     const hashedTightPacked = ethers.utils.solidityKeccak256(
-      ['address', 'address', 'uint256', 'uint256', 'uint256', 'uint256'],
+      ['address', 'address', 'uint256', 'uint256', 'address', 'uint256', 'uint256'],
       [
         deployerAccount.address,
         receiverAccount.address,
         amount,
         fee,
+        dttBasic20Contract.address,
         nonce,
         chainId,
       ]
@@ -157,6 +161,7 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
           receiverAccount.address,
           amount,
           fee,
+          dttBasic20Contract.address,
           nonce,
           chainId,
           ethers.utils.arrayify(signature)
@@ -172,12 +177,13 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
     const chainId = 31337
 
     const hashedTightPacked = ethers.utils.solidityKeccak256(
-      ['address', 'address', 'uint256', 'uint256', 'uint256', 'uint256'],
+      ['address', 'address', 'uint256', 'uint256', 'address', 'uint256', 'uint256'],
       [
         deployerAccount.address,
         receiverAccount.address,
         amount,
         fee,
+        dttBasic20Contract.address,
         nonce,
         chainId,
       ]
@@ -195,11 +201,52 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
           receiverAccount.address,
           amount,
           incorrectFee,
+          dttBasic20Contract.address,
           nonce,
           chainId,
           ethers.utils.arrayify(signature)
         )
     ).to.be.revertedWith('DTT: Signature invalid')
+  })
+
+  it('reverts when the incorrect token address is provided as an argument', async () => {
+    const amount = 5
+    const fee = 2
+    const nonce = 0
+    // Current hardhat test chain id
+    const chainId = 31337
+
+    // The equivalent of keccak256(abi.encodePacked())
+    const hashedTightPacked = ethers.utils.solidityKeccak256(
+      ['address', 'address', 'uint256', 'uint256', 'address', 'uint256', 'uint256'],
+      [
+        deployerAccount.address,
+        receiverAccount.address,
+        amount,
+        fee,
+        ZERO_ADDRESS,
+        nonce,
+        chainId,
+      ]
+    )
+    // Sign the message and get the 65 byte signature back
+    const signature = await deployerAccount.signMessage(
+      ethers.utils.arrayify(hashedTightPacked)
+    )
+
+    // Have the delegate account call the delegatedTransfer function
+    await expect(dttBasic20Contract
+      .connect(delegateAccount)
+      .delegatedTransfer(
+        deployerAccount.address,
+        receiverAccount.address,
+        amount,
+        fee,
+        ZERO_ADDRESS,
+        nonce,
+        chainId,
+        ethers.utils.arrayify(signature)
+      )).to.be.revertedWith('DTT: Incorrect token address provided')
   })
 
   context('when combatting replay attacks', async () => {
@@ -210,12 +257,13 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
       const chainId = 31337
 
       const hashedTightPacked = ethers.utils.solidityKeccak256(
-        ['address', 'address', 'uint256', 'uint256', 'uint256', 'uint256'],
+        ['address', 'address', 'uint256', 'uint256', 'address', 'uint256', 'uint256'],
         [
           deployerAccount.address,
           receiverAccount.address,
           amount,
           fee,
+          dttBasic20Contract.address,
           nonce,
           chainId,
         ]
@@ -232,10 +280,12 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
           receiverAccount.address,
           amount,
           fee,
+          dttBasic20Contract.address,
           nonce,
           chainId,
           ethers.utils.arrayify(signature)
         )
+
       // Try a simple replay
       await expect(
         dttBasic20Contract
@@ -245,6 +295,7 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
             receiverAccount.address,
             amount,
             fee,
+            dttBasic20Contract.address,
             nonce,
             chainId,
             ethers.utils.arrayify(signature)
@@ -259,6 +310,7 @@ describe('Delegated Transfer Token - Basic ERC20', () => {
             receiverAccount.address,
             amount,
             fee,
+            dttBasic20Contract.address,
             nonce + 1,
             chainId,
             ethers.utils.arrayify(signature)
